@@ -79,6 +79,6 @@ Connect to the SMTP server using SSL.
 ### Example
 
 ```
-Office-Update.ps1 -Office C:\officesrc -config config.xml -Days 60 -L C:\scripts\log -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp exch01.contoso.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+Office-Update.ps1 -Office C:\officesrc -Config config.xml -Days 60 -L C:\scripts\log -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp exch01.contoso.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 ```
 The above command will run the script, download the Office files to C:\officesrc\Office. It will use a configuration file called config.xml in the C:\officesrc folder. Any update files older than 60 days will be removed. If the download is successful a log file is generated and it can be emailed as a notification that a download occurred.
