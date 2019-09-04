@@ -1,16 +1,16 @@
 ﻿<#PSScriptInfo
 
-.VERSION 1.0
+.VERSION 1.1
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
 .AUTHOR Mike Galvin Contact: mike@gal.vin twitter.com/mikegalvin_
 
-.COMPANYNAME
+.COMPANYNAME Mike Galvin
 
 .COPYRIGHT (C) Mike Galvin. All rights reserved.
 
-.TAGS Office 2019 365 Click-to-run updates
+.TAGS Office 2019 365 Click-to-run C2R updates
 
 .LICENSEURI
 
@@ -57,6 +57,9 @@
     The path to output the log file to.
     The file name will be Office-Update.log.
 
+    .PARAMETER Subject
+    The email subject that the email should have. Encapulate with single or double quotes.
+
     .PARAMETER SendTo
     The e-mail address the log should be sent to.
 
@@ -76,15 +79,15 @@
     Connect to the SMTP server using SSL.
 
     .EXAMPLE
-    Office-Update.ps1 -Office C:\officesrc -Config config.xml -Days 60 -L C:\scripts\logs -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp exch01.contoso.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+    Office-Update.ps1 -Office C:\officesrc -Config config.xml -Days 60 -L C:\scripts\logs -Subject 'Server: Office Updates' -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp exch01.contoso.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 
     The above command will run the script, download the Office files to C:\officesrc\Office.
     It will use a configuration file called config.xml in the C:\officesrc folder.
     Any update files older than 60 days will be removed.
-    If the download is successful a log file is generated and it can be emailed as a notification that a download occurred.
+    If the download is successful a log file is generated and it can be e-mailed with a custom subject line as a notification that a download occurred.
 #>
 
-## Set up command line switches and what variables they map to
+## Set up command line switches and what variables they map to.
 [CmdletBinding()]
 Param(
     [parameter(Mandatory=$True)]
@@ -99,6 +102,8 @@ Param(
     [alias("L")]
     [ValidateScript({Test-Path $_ -PathType 'Container'})]
     $LogPath,
+    [alias("Subject")]
+    $MailSubject,
     [alias("SendTo")]
     $MailTo,
     [alias("From")]
@@ -124,13 +129,13 @@ $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (G
 ## If the Updated variable returns as not 0...
 If ($Updated -ne 0)
 {
-    ## If logging is configured, start logging
+    ## If logging is configured, start logging.
     If ($LogPath)
     {
         $LogFile = "Office-Update.log"
         $Log = "$LogPath\$LogFile"
 
-        ##Test for the existence of the log file
+        ##Test for the existence of the log file.
         $LogT = Test-Path -Path $Log
 
         ## If the log file already exists, clear it.
@@ -174,43 +179,48 @@ If ($Updated -ne 0)
         Write-Host "Old Office source files were removed:"
         Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime –lt (Get-Date).AddDays(-$Time)
 
-        ## If configured, remove the old files
+        ## If configured, remove the old files.
         Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime –lt (Get-Date).AddDays(-$Time)} | Remove-Item -Recurse
     }
 
-    ## If logging was configured stop the log
+    ## If logging was configured stop the log.
     If ($LogPath)
     {
         Add-Content -Path $Log -Value " "
         Add-Content -Path $Log -Value "$(Get-Date -Format G) Log finished"
         Add-Content -Path $Log -Value "****************************************"
 
-        ## If email was configured, set the variables for the email subject and body
+        ## If email was configured, set the variables for the email subject and body.
         If ($SmtpServer)
         {
-            $MailSubject = "Office Update Log"
+            # If no subject is set, use the string below.
+            If ($Null -eq $MailSubject)
+            {
+                $MailSubject = "Office Update"
+            }
+
             $MailBody = Get-Content -Path $Log | Out-String
 
-            ## If an email password was configured, create a variable with the username and password
+            ## If an email password was configured, create a variable with the username and password.
             If ($SmtpPwd)
             {
                 $SmtpPwdEncrypt = Get-Content $SmtpPwd | ConvertTo-SecureString
                 $SmtpCreds = New-Object System.Management.Automation.PSCredential -ArgumentList ($SmtpUser, $SmtpPwdEncrypt)
 
-                ## If ssl was configured, send the email with ssl
+                ## If ssl was configured, send the email with ssl.
                 If ($UseSsl)
                 {
                     Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -UseSsl -Credential $SmtpCreds
                 }
 
-                ## If ssl wasn't configured, send the email without ssl
+                ## If ssl wasn't configured, send the email without ssl.
                 Else
                 {
                     Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Credential $SmtpCreds
                 }
             }
 
-            ## If an email username and password were not configured, send the email without authentication
+            ## If an email username and password were not configured, send the email without authentication.
             Else
             {
                 Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer
