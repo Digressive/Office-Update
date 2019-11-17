@@ -2,15 +2,21 @@
 
 PowerShell script to automate the downloading and maintenance of click-to-run Office 365/2019 update files.
 
+For full instructions and documentation, [visit my blog post](https://gal.vin/2019/06/16/automated-office-updates/)
+
+Please consider donating to support my work:
+
+* You can support me on a monthly basis [using Patreon.](https://www.patreon.com/mikegalvin)
+* You can support me with a one-time payment [using PayPal](https://www.paypal.me/digressive) or by [using Kofi.](https://ko-fi.com/mikegalvin)
+
 Automated Office Updates can also be downloaded from:
 
 * [The Microsoft TechNet Gallery](https://gallery.technet.microsoft.com/Automated-Office-Updates-4fef21d3?redir=0)
 * [The PowerShell Gallery](https://www.powershellgallery.com/packages/Office-Update/1.0)
-* For full instructions and documentation, [visit my blog post](https://gal.vin/2019/06/16/automated-office-updates/)
-
--Mike
 
 Tweet me if you have questions: [@mikegalvin_](https://twitter.com/mikegalvin_)
+
+-Mike
 
 ## Features and Requirements
 
