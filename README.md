@@ -16,7 +16,7 @@ Office Update Manager
    \___/ \__|_|_|_|\__|\__, |        Click-to-Run
                        |___/
 
-    Mike Galvin    https://gal.vin    Version 2020.03.01
+    Mike Galvin    https://gal.vin    Version 2020.03.01 +
 ```
 
 For full instructions and documentation, [visit my site.](https://gal.vin/2019/06/16/automated-office-updates/)
@@ -39,7 +39,19 @@ Tweet me if you have questions: [@mikegalvin_](https://twitter.com/mikegalvin_)
 * This utility will check for and download update files for Office 365 and Office 2019.
 * It can be configured to remove old update files.
 * It can be configured to create and e-mail a log file.
+* The utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
+* The utility requires at least PowerShell 5.0.
 * This utility has been tested on Windows 10, Windows Server 2016 and Windows Server 2019 and updating Office 2019 and 365 installations.
+
+### Folder Structure
+
+This utility requires a specific folder structure in order to operate, it expects the Office Deployment Tool and the configuration xml file to be in the same folder. Additionally, the source path of the Office installation files in the configuration xml file should be set to the same location. For example:
+
+* Office Deployment Tool location: \\\server\share\Office-365-x64\setup.exe
+* Configuration xml file location: \\\server\share\Office-365-x64\config-2019-x64.xml
+* Source path in the configuration xml file: \\\server\share\Office-365-x64
+
+This configuration will result in the Office update files being downloaded and stored in: \\\server\share\Office-2019-x64\Office\Data.
 
 ### Generating A Password File
 
@@ -76,7 +88,7 @@ Here’s a list of all the command line switches and example configurations.
 ### Example
 
 ``` txt
-Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From OffUpdate@contoso.com -Smtp exch01.contoso.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From OffUpdate@contoso.com -Smtp smtp.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 ```
 
-The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory \\Apps01\Software\Office365. Any update files older than 30 days will be removed. If the download is successful the log file will be output to C:\scripts\logs and e-mailed with a custom subject line.
+The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory \\\Apps01\Software\Office365. Any update files older than 30 days will be removed. If the download is successful the log file will be output to C:\scripts\logs and e-mailed with a custom subject line.

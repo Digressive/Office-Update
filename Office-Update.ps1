@@ -143,7 +143,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        Click-to-Run               "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 2020.03.01        "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 2020.03.01  +     "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -Object ""
 }
