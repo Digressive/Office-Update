@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 2020.03.01
+.VERSION 20.03.20
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -143,7 +143,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        Click-to-Run               "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 2020.03.01  +     "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 20.03.20  +       "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -Object ""
 }
