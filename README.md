@@ -19,7 +19,7 @@ Office Update Manager
     Mike Galvin    https://gal.vin    Version 20.03.20 +
 ```
 
-For full instructions and documentation, [visit my site.](https://gal.vin/2019/06/16/automated-office-updates/)
+For full instructions and documentation, [visit my site.](https://gal.vin/posts/automated-office-updates/)
 
 Please consider donating to support my work:
 
