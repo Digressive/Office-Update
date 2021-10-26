@@ -172,123 +172,123 @@ Function Get-DateFormat
 }
 
 ## Function for logging.
-Function Write-Log($Type, $Event)
+Function Write-Log($Type, $Evt)
 {
     If ($Type -eq "Info")
     {
         If ($Null -ne $LogPath)
         {
-            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [INFO] $Event"
+            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [INFO] $Evt"
         }
         
-        Write-Host -Object "$(Get-DateFormat) [INFO] $Event"
+        Write-Host -Object "$(Get-DateFormat) [INFO] $Evt"
     }
 
     If ($Type -eq "Succ")
     {
         If ($Null -ne $LogPath)
         {
-            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [SUCCESS] $Event"
+            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [SUCCESS] $Evt"
         }
 
-        Write-Host -ForegroundColor Green -Object "$(Get-DateFormat) [SUCCESS] $Event"
+        Write-Host -ForegroundColor Green -Object "$(Get-DateFormat) [SUCCESS] $Evt"
     }
 
     If ($Type -eq "Err")
     {
         If ($Null -ne $LogPath)
         {
-            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [ERROR] $Event"
+            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [ERROR] $Evt"
         }
 
-        Write-Host -ForegroundColor Red -BackgroundColor Black -Object "$(Get-DateFormat) [ERROR] $Event"
+        Write-Host -ForegroundColor Red -BackgroundColor Black -Object "$(Get-DateFormat) [ERROR] $Evt"
     }
 
     If ($Type -eq "Conf")
     {
         If ($Null -ne $LogPath)
         {
-            Add-Content -Path $Log -Encoding ASCII -Value "$Event"
+            Add-Content -Path $Log -Encoding ASCII -Value "$Evt"
         }
 
-        Write-Host -ForegroundColor Cyan -Object "$Event"
+        Write-Host -ForegroundColor Cyan -Object "$Evt"
     }
 }
 
 ##
 ## Display the current config and log if configured.
 ##
-Write-Log -Type Conf -Event "************ Running with the following config *************."
-Write-Log -Type Conf -Event "Office folder:.........$OfficeSrc."
-Write-Log -Type Conf -Event "Config file:...........$Cfg."
-Write-Log -Type Conf -Event "Days to keep updates:..$Time days."
+Write-Log -Type Conf -Evt "************ Running with the following config *************."
+Write-Log -Type Conf -Evt "Office folder:.........$OfficeSrc."
+Write-Log -Type Conf -Evt "Config file:...........$Cfg."
+Write-Log -Type Conf -Evt "Days to keep updates:..$Time days."
 
 If ($Null -ne $LogPath)
 {
-    Write-Log -Type Conf -Event "Logs directory:........$LogPath."
+    Write-Log -Type Conf -Evt "Logs directory:........$LogPath."
 }
 
 else {
-    Write-Log -Type Conf -Event "Logs directory:........No Config"
+    Write-Log -Type Conf -Evt "Logs directory:........No Config"
 }
 
 If ($MailTo)
 {
-    Write-Log -Type Conf -Event "E-mail log to:.........$MailTo."
+    Write-Log -Type Conf -Evt "E-mail log to:.........$MailTo."
 }
 
 else {
-    Write-Log -Type Conf -Event "E-mail log to:.........No Config"
+    Write-Log -Type Conf -Evt "E-mail log to:.........No Config"
 }
 
 If ($MailFrom)
 {
-    Write-Log -Type Conf -Event "E-mail log from:.......$MailFrom."
+    Write-Log -Type Conf -Evt "E-mail log from:.......$MailFrom."
 }
 
 else {
-    Write-Log -Type Conf -Event "E-mail log from:.......No Config"
+    Write-Log -Type Conf -Evt "E-mail log from:.......No Config"
 }
 
 If ($MailSubject)
 {
-    Write-Log -Type Conf -Event "E-mail subject:........$MailSubject."
+    Write-Log -Type Conf -Evt "E-mail subject:........$MailSubject."
 }
 
 else {
-    Write-Log -Type Conf -Event "E-mail subject:........Default"
+    Write-Log -Type Conf -Evt "E-mail subject:........Default"
 }
 
 If ($SmtpServer)
 {
-    Write-Log -Type Conf -Event "SMTP server is:........$SmtpServer."
+    Write-Log -Type Conf -Evt "SMTP server is:........$SmtpServer."
 }
 
 else {
-    Write-Log -Type Conf -Event "SMTP server is:........No Config"
+    Write-Log -Type Conf -Evt "SMTP server is:........No Config"
 }
 
 If ($SmtpUser)
 {
-    Write-Log -Type Conf -Event "SMTP user is:..........$SmtpUser."
+    Write-Log -Type Conf -Evt "SMTP user is:..........$SmtpUser."
 }
 
 else {
-    Write-Log -Type Conf -Event "SMTP user is:..........No Config"
+    Write-Log -Type Conf -Evt "SMTP user is:..........No Config"
 }
 
 If ($SmtpPwd)
 {
-    Write-Log -Type Conf -Event "SMTP pwd file:.........$SmtpPwd."
+    Write-Log -Type Conf -Evt "SMTP pwd file:.........$SmtpPwd."
 }
 
 else {
-    Write-Log -Type Conf -Event "SMTP pwd file:.........No Config"
+    Write-Log -Type Conf -Evt "SMTP pwd file:.........No Config"
 }
 
-Write-Log -Type Conf -Event "-UseSSL switch is:.....$UseSsl."
-Write-Log -Type Conf -Event "************************************************************"
-Write-Log -Type Info -Event "Process started"
+Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
+Write-Log -Type Conf -Evt "************************************************************"
+Write-Log -Type Info -Evt "Process started"
 ##
 ## Display current config ends here.
 ##
@@ -306,8 +306,8 @@ $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (G
 If ($Updated -ne 0)
 {
     $VerName = Get-ChildItem -Path $UpdateFolder -Directory | Sort-Object LastWriteTime | Select-Object -last 1 | Select-Object -ExpandProperty Name
-    Write-Log -Type Info -Event "Office source files were updated."
-    Write-Log -Type Info -Event "Latest version is: $VerName"
+    Write-Log -Type Info -Evt "Office source files were updated."
+    Write-Log -Type Info -Evt "Latest version is: $VerName"
 
     If ($Null -ne $Time)
     {
@@ -315,7 +315,7 @@ If ($Updated -ne 0)
 
         If ($FilesToDel.count -ne 0)
         {
-            Write-Log -Type Info -Event "The following old Office files were removed:"
+            Write-Log -Type Info -Evt "The following old Office files were removed:"
             Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime –lt (Get-Date).AddDays(-$Time)
             Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$Time)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
 
@@ -324,7 +324,7 @@ If ($Updated -ne 0)
         }
     }
 
-    Write-Log -Type Info -Event "Process finished"
+    Write-Log -Type Info -Evt "Process finished"
 
     ## If logging is configured then finish the log file.
     If ($LogPath)
@@ -369,7 +369,7 @@ If ($Updated -ne 0)
     }
 }
 
-Write-Log -Type Info -Event "No updates."
-Write-Log -Type Info -Event "Process finished"
+Write-Log -Type Info -Evt "No updates."
+Write-Log -Type Info -Evt "Process finished"
 
 ## End
