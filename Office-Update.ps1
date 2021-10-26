@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 20.03.20
+.VERSION 21.10.26
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -143,7 +143,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        Click-to-Run               "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 20.03.20  +       "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 21.10.26          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -Object ""
 }
@@ -305,7 +305,6 @@ $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (G
 ## If the Updated variable returns as not 0 then continue.
 If ($Updated -ne 0)
 {
-    #$VerName = Get-ChildItem -Path $UpdateFolder -Directory | Where-Object CreationTime –gt (Get-Date).AddDays(-1) | Select-Object -ExpandProperty Name
     $VerName = Get-ChildItem -Path $UpdateFolder -Directory | Sort-Object LastWriteTime | Select-Object -last 1 | Select-Object -ExpandProperty Name
     Write-Log -Type Info -Event "Office source files were updated."
     Write-Log -Type Info -Event "Latest version is: $VerName"

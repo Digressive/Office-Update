@@ -16,7 +16,7 @@ Office Update Manager
    \___/ \__|_|_|_|\__|\__, |        Click-to-Run
                        |___/
 
-    Mike Galvin    https://gal.vin    Version 20.03.20 +
+    Mike Galvin    https://gal.vin    Version 21.10.26
 ```
 
 For full instructions and documentation, [visit my site.](https://gal.vin/posts/automated-office-updates/)
