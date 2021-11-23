@@ -14,7 +14,7 @@
 
 .LICENSEURI
 
-.PROJECTURI https://gal.vin/2019/06/16/automated-office-updates
+.PROJECTURI https://gal.vin/posts/automated-office-updates
 
 .ICONURI
 
