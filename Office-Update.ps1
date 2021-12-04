@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 21.10.26
+.VERSION 21.12.04
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -63,8 +63,7 @@
     Do not add a trailing \ backslash.
 
     .PARAMETER Subject
-    The subject line for the e-mail log.
-    Encapsulate with single or double quotes.
+    The subject line for the e-mail log. Encapsulate with single or double quotes.
     If no subject is specified, the default of "Office Update Utility Log" will be used.
 
     .PARAMETER SendTo
@@ -75,6 +74,9 @@
 
     .PARAMETER Smtp
     The DNS name or IP address of the SMTP server.
+
+    .PARAMETER Port
+    The Port that should be used for the SMTP server.
 
     .PARAMETER User
     The user account to authenticate to the SMTP server.
@@ -108,7 +110,6 @@ Param(
     [alias("Days")]
     $Time,
     [alias("L")]
-    [ValidateScript({Test-Path $_ -PathType 'Container'})]
     $LogPath,
     [alias("Subject")]
     $MailSubject,
@@ -118,6 +119,8 @@ Param(
     $MailFrom,
     [alias("Smtp")]
     $SmtpServer,
+    [alias("Port")]
+    $SmtpPort,
     [alias("User")]
     $SmtpUser,
     [alias("Pwd")]
@@ -143,7 +146,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        Click-to-Run               "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 21.10.26          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 21.12.04          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -Object ""
 }
@@ -152,6 +155,14 @@ If ($NoBanner -eq $False)
 ## If the log file already exists, clear it.
 If ($LogPath)
 {
+    ## Make sure the log directory exists.
+    $LogPathFolderT = Test-Path $LogPath
+
+    If ($LogPathFolderT -eq $False)
+    {
+        New-Item $LogPath -ItemType Directory -Force | Out-Null
+    }
+
     $LogFile = ("Office-Update_{0:yyyy-MM-dd_HH-mm-ss}.log" -f (Get-Date))
     $Log = "$LogPath\$LogFile"
 
@@ -215,10 +226,20 @@ Function Write-Log($Type, $Evt)
     }
 }
 
+## getting Windows Version info
+$OSVMaj = [environment]::OSVersion.Version | Select-Object -expand major
+$OSVMin = [environment]::OSVersion.Version | Select-Object -expand minor
+$OSVBui = [environment]::OSVersion.Version | Select-Object -expand build
+$OSV = "$OSVMaj" + "." + "$OSVMin" + "." + "$OSVBui"
+
 ##
 ## Display the current config and log if configured.
 ##
+
 Write-Log -Type Conf -Evt "************ Running with the following config *************."
+Write-Log -Type Conf -Evt "Utility Version:.......21.12.04"
+Write-Log -Type Conf -Evt "Hostname:..............$Vs."
+Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
 Write-Log -Type Conf -Evt "Office folder:.........$OfficeSrc."
 Write-Log -Type Conf -Evt "Config file:...........$Cfg."
 Write-Log -Type Conf -Evt "Days to keep updates:..$Time days."
@@ -268,6 +289,15 @@ else {
     Write-Log -Type Conf -Evt "SMTP server is:........No Config"
 }
 
+If ($SmtpPort)
+{
+    Write-Log -Type Conf -Evt "SMTP Port:...............$SmtpPort."
+}
+
+else {
+    Write-Log -Type Conf -Evt "SMTP Port:...............Default"
+}
+
 If ($SmtpUser)
 {
     Write-Log -Type Conf -Evt "SMTP user is:..........$SmtpUser."
@@ -289,6 +319,7 @@ else {
 Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
 Write-Log -Type Conf -Evt "************************************************************"
 Write-Log -Type Info -Evt "Process started"
+
 ##
 ## Display current config ends here.
 ##
@@ -338,6 +369,12 @@ If ($Updated -ne 0)
             If ($Null -eq $MailSubject)
             {
                 $MailSubject = "Office Update Utility Log"
+            }
+
+            ## Default Smtp Port if none is configured.
+            If ($Null -eq $SmtpPort)
+            {
+                $SmtpPort = "25"
             }
 
             ## Setting the contents of the log to be the e-mail body. 
