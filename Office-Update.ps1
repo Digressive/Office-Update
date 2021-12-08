@@ -41,7 +41,7 @@
     To create the password file run this command as the user and on the machine that will use the file:
 
     $creds = Get-Credential
-    $creds.Password | ConvertFrom-SecureString | Set-Content c:\foo\ps-script-pwd.txt
+    $creds.Password | ConvertFrom-SecureString | Set-Content C:\scripts\ps-script-pwd.txt
 
     .PARAMETER Office
     The folder containing the Office Deployment Tool (ODT).
