@@ -291,11 +291,11 @@ else {
 
 If ($SmtpPort)
 {
-    Write-Log -Type Conf -Evt "SMTP Port:...............$SmtpPort."
+    Write-Log -Type Conf -Evt "SMTP Port:.............$SmtpPort."
 }
 
 else {
-    Write-Log -Type Conf -Evt "SMTP Port:...............Default"
+    Write-Log -Type Conf -Evt "SMTP Port:.............Default"
 }
 
 If ($SmtpUser)
