@@ -2,23 +2,6 @@
 
 Office Update Manager
 
-```txt
-     ___  __  __ _                            _       _
-    /___\/ _|/ _(_) ___ ___   /\ /\ _ __   __| | __ _| |_ ___
-   //  // |_| |_| |/ __/ _ \ / / \ \ '_ \ / _  |/ _  | __/ _ \  
-  / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/  
-  \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|  
-                                   |_|
-         _   _ _ _ _
-   /\ /\| |_(_) (_) |_ _   _
-  / / \ \ __| | | | __| | | |           3 6 5
-  \ \_/ / |_| | | | |_| |_| |          2 0 1 9
-   \___/ \__|_|_|_|\__|\__, |        Click-to-Run
-                       |___/
-
-    Mike Galvin    https://gal.vin    Version 21.12.08
-```
-
 For full instructions and documentation, [visit my site.](https://gal.vin/posts/automated-office-updates/)
 
 Please consider supporting my work:
