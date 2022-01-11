@@ -14,7 +14,7 @@
 
 .LICENSEURI
 
-.PROJECTURI https://gal.vin/posts/automated-office-updates
+.PROJECTURI https://gal.vin/utils/office-update-utility/
 
 .ICONURI
 

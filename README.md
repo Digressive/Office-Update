@@ -2,7 +2,7 @@
 
 Office Update Manager
 
-For full instructions and documentation, [visit my site.](https://gal.vin/posts/automated-office-updates/)
+For full instructions and documentation, [visit my site.](https://gal.vin/utils/office-update-utility/)
 
 Please consider supporting my work:
 
