@@ -1,13 +1,13 @@
 # Office Update Utility
 
-Office Update Manager
+Microsoft Office Update Manager
 
-For full instructions and documentation, [visit my site.](https://gal.vin/utils/office-update-utility/)
+For full change log and more information, [visit my site.](https://gal.vin/utils/office-update-utility/)
 
 Please consider supporting my work:
 
-* Sign up using [**Patreon**](https://www.patreon.com/mikegalvin).
-* Support with a one-time payment using [**PayPal**](https://www.paypal.me/digressive).
+* Sign up [using Patreon.](https://www.patreon.com/mikegalvin)
+* Support with a one-time payment [using PayPal.](https://www.paypal.me/digressive)
 
 Office Update Utility can also be downloaded from:
 
@@ -19,12 +19,12 @@ Join the [Discord](http://discord.gg/5ZsnJ5k) or Tweet me if you have questions:
 
 ## Features and Requirements
 
-* This utility will check for and download update files for Office 365 and Office 2019.
+* This utility will check for and download update files for Microsoft Office.
 * It can be configured to remove old update files.
 * It can be configured to create and e-mail a log file.
 * The utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
 * The utility requires at least PowerShell 5.0.
-* This utility has been tested on Windows 11, Windows 10, Windows Server 2016 and Windows Server 2019 and updating Office 2019 and 365 installations.
+* This utility has been tested on Windows 11, Windows 10, Windows Server 2022, Windows Server 2019 and Windows Server 2016.
 
 ### Folder Structure
 
@@ -62,7 +62,7 @@ Here’s a list of all the command line switches and example configurations.
 | -L | The path to output the log file to. The file name will be Office-Update_YYYY-MM-dd_HH-mm-ss.log. Do not add a trailing \ backslash. | ```C:\scripts\logs``` |
 | -Subject | The subject line for the e-mail log. Encapsulate with single or double quotes. If no subject is specified, the default of "Office Update Utility Log" will be used. | 'Server: Notification' |
 | -SendTo | The e-mail address the log should be sent to. | me@contoso.com |
-| -From | The e-mail address the log should be sent from. | OffUpdate@contoso.com |
+| -From | The e-mail address the log should be sent from. | Office-Update@contoso.com |
 | -Smtp | The DNS name or IP address of the SMTP server. | smtp-mail.outlook.com OR smtp.office365.com |
 | -Port | The Port that should be used for the SMTP server. If none is specified then the default of 25 will be used. | 587 |
 | -User | The user account to authenticate to the SMTP server. | example@contoso.com |
@@ -72,7 +72,7 @@ Here’s a list of all the command line switches and example configurations.
 ### Example
 
 ``` txt
-Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From OffUpdate@contoso.com -Smtp smtp.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 ```
 
 The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory ```\\Apps01\Software\Office365```. Any update files older than 30 days will be removed. If the download is successful the log file will be output to ```C:\scripts\logs``` and e-mailed with a custom subject line.

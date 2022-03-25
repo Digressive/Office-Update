@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 21.12.08
+.VERSION 22.03.25
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -18,7 +18,7 @@
 
 .ICONURI
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -30,10 +30,10 @@
 
 <#
     .SYNOPSIS
-    Office Update Utility - Office Update Manager.
+    Office Update Utility - Microsoft Office Update Manager.
 
     .DESCRIPTION
-    Checks for updates of Office 365/2019.
+    Checks for updates of Microsoft Office
 
     To send a log file via e-mail using ssl and an SMTP password you must generate an encrypted password file.
     The password file is unique to both the user and machine.
@@ -88,13 +88,12 @@
     Configures the utility to connect to the SMTP server using SSL.
 
     .EXAMPLE
-    Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs
-    -Subject 'Server: Office Update' -SendTo me@contoso.com -From OffUpdate@contoso.com -Smtp exch01.contoso.com
-    -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+    Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update'
+    -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 
-    The above command will download any Office updates for the version and channel configured in config-365-x64.xml
-    to the Office files directory \\Apps01\Software\Office365. Any update files older than 30 days will be removed.
-    If the download is successful the log file will be output to C:\scripts\logs and e-mailed with a custom subject line.
+    The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files
+    directory \\Apps01\Software\Office365. Any update files older than 30 days will be removed. If the download is successful the log
+    file will be output to C:\scripts\logs and e-mailed with a custom subject line.
 #>
 
 ## Set up command line switches.
@@ -141,12 +140,10 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                   |_|                          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "         _   _ _ _ _                                            "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _                                    "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |           3 6 5                   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |          2 0 1 9                  "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        Click-to-Run               "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |         Version 22.03.25          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |                                   "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |    Mike Galvin   https://gal.vin  "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    Mike Galvin    https://gal.vin    Version 21.12.08          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -Object ""
 }
@@ -237,7 +234,7 @@ $OSV = "$OSVMaj" + "." + "$OSVMin" + "." + "$OSVBui"
 ##
 
 Write-Log -Type Conf -Evt "************ Running with the following config *************."
-Write-Log -Type Conf -Evt "Utility Version:.......21.12.08"
+Write-Log -Type Conf -Evt "Utility Version:.......22.03.25"
 Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
 Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
 Write-Log -Type Conf -Evt "Office folder:.........$OfficeSrc."
