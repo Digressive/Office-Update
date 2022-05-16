@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.03.25
+.VERSION 22.05.16
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -141,7 +141,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "         _   _ _ _ _                     Mike Galvin            "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _           https://gal.vin          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |                                   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |         Version 22.03.25          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |         Version 22.05.16          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        See -help for usage        "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
@@ -248,7 +248,7 @@ else {
     ##
 
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.03.25"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.05.16"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($Null -ne $OfficeSrc)
