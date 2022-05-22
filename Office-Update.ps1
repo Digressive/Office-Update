@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.05.16
+.VERSION 22.05.23
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -61,6 +61,12 @@
     The path to output the log file to.
     The file name will be Office-Update_YYYY-MM-dd_HH-mm-ss.log
     Do not add a trailing \ backslash.
+
+    .PARAMETER LogRotate
+    Instructs the utility to remove logs older than a specified number of days.
+
+    .PARAMETER Help
+    Show usage help in the command line.
 
     .PARAMETER Subject
     The subject line for the e-mail log. Encapsulate with single or double quotes.
@@ -138,12 +144,12 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/  "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|  "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                   |_|                          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "         _   _ _ _ _                     Mike Galvin            "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _           https://gal.vin          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |                                   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |         Version 22.05.16          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |        See -help for usage        "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/                                    "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "         _   _ _ _ _                                            "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _             Mike Galvin            "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |          https://gal.vin          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |                                   "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |         Version 22.05.23          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/         See -help for usage        "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "            Donate: https://www.paypal.me/digressive            "
     Write-Host -Object ""
@@ -248,7 +254,7 @@ else {
     ##
 
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.05.16"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.05.23"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($Null -ne $OfficeSrc)
@@ -291,10 +297,6 @@ else {
         Write-Log -Type Conf -Evt "E-mail subject:........$MailSubject."
     }
 
-    else {
-        Write-Log -Type Conf -Evt "E-mail subject:........Default"
-    }
-
     If ($SmtpServer)
     {
         Write-Log -Type Conf -Evt "SMTP server is:........$SmtpServer."
@@ -303,10 +305,6 @@ else {
     If ($SmtpPort)
     {
         Write-Log -Type Conf -Evt "SMTP Port:.............$SmtpPort."
-    }
-
-    else {
-        Write-Log -Type Conf -Evt "SMTP Port:.............Default"
     }
 
     If ($SmtpUser)
@@ -322,13 +320,13 @@ else {
     Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
     Write-Log -Type Conf -Evt "************************************************************"
     Write-Log -Type Info -Evt "Process started"
-
     ##
     ## Display current config ends here.
     ##
 
     #Run update process.
-    & $OfficeSrc\setup.exe /download $OfficeSrc\$Cfg
+    #& $OfficeSrc\setup.exe /download $OfficeSrc\$Cfg
+    Start-Process $OfficeSrc\setup.exe -ArgumentList "/download $OfficeSrc\$Cfg" -Wait
 
     ## Location of the office source files.
     $UpdateFolder = "$OfficeSrc\Office\Data"
