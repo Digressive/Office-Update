@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.05.23
+.VERSION 22.05.25
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -106,7 +106,6 @@ Param(
     [ValidateScript({Test-Path $_ -PathType 'Container'})]
     $OfficeSrc,
     [alias("Config")]
-    [ValidateScript({Test-Path -Path $_ -PathType Leaf})]
     $Cfg,
     [alias("Days")]
     $Time,
@@ -146,7 +145,7 @@ If ($NoBanner -eq $False)
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _             Mike Galvin            "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |          https://gal.vin          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |                                   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |         Version 22.05.23          "
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |         Version 22.05.25          "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/         See -help for usage        "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "            Donate: https://www.paypal.me/digressive            "
@@ -156,13 +155,29 @@ If ($NoBanner -eq $False)
 If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
 {
     Write-Host "Usage:"
-    Write-Host "From an elevated terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30"
+    Write-Host "From a terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30"
     Write-Host "This will update the office installation files in the specified directory, and delete update files older than 30 days"
     Write-Host ""
     Write-Host "To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number]."
     Write-Host "Run with no ASCII banner: -NoBanner"
     Write-Host ""
-    Write-Host "SOmething something EMail output options...."
+    Write-Host "To use the email function:"
+    Write-Host "Specify the subject line with -Subject ""'Office Updated'"" If you leave this blank a default subject will be used"
+    Write-Host "Make sure to encapsulate it with double & single quotes as per the example for Powershell to read it correctly."
+    Write-Host "Specify the 'to' address with -SendTo me@contoso.com"
+    Write-Host "Specify the 'from' address with -From Office-Update@contoso.com"
+    Write-Host "Specify the SMTP server with -Smtp smtp-mail.outlook.com"
+    Write-Host "Specify the port to use with the SMTP server with -Port 587. If none is specified then the default of 25 will be used."
+    Write-Host "Specify the user to access SMTP with -User example@contoso.com"
+    Write-Host "Specify the password file to use with -Pwd [path\]ps-script-pwd.txt."
+    Write-Host ""
+    Write-Host "To generate an encrypted password file run the following commands on the computer and the user that will run the script:"
+    Write-Host ""
+    Write-Host '$creds = Get-Credential'
+    Write-Host '$creds.Password | ConvertFrom-SecureString | Set-Content [path\]ps-script-pwd.txt'
+    Write-Host ""
+    Write-Host "Enable SSL connections with -UseSsl"
+    Write-Host ""
 }
 
 else {
@@ -252,7 +267,7 @@ else {
     ##
 
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.05.23"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.05.25"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($Null -ne $OfficeSrc)
@@ -315,7 +330,10 @@ else {
         Write-Log -Type Conf -Evt "SMTP pwd file:.........$SmtpPwd."
     }
 
-    Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
+    If ($SmtpPwd)
+    {
+        Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
+    }
     Write-Log -Type Conf -Evt "************************************************************"
     Write-Log -Type Info -Evt "Process started"
     ##
@@ -323,8 +341,7 @@ else {
     ##
 
     #Run update process.
-    #& $OfficeSrc\setup.exe /download $OfficeSrc\$Cfg
-    Start-Process $OfficeSrc\setup.exe -ArgumentList "/download $OfficeSrc\$Cfg" -Wait
+    & $OfficeSrc\setup.exe /download $OfficeSrc\$Cfg
 
     ## Location of the office source files.
     $UpdateFolder = "$OfficeSrc\Office\Data"
@@ -403,16 +420,18 @@ else {
                 }
             }
         }
-
-        If ($Null -ne $LogHistory)
-        {
-            ## Cleanup logs.
-            Write-Log -Type Info -Evt "Deleting logs older than: $LogHistory days"
-            Get-ChildItem -Path "$LogPath\Office-Update_*" -File | Where-Object CreationTime -lt (Get-Date).AddDays(-$LogHistory) | Remove-Item -Recurse
-        }
     }
 
-    Write-Log -Type Info -Evt "No updates."
-    Write-Log -Type Info -Evt "Process finished"
+    else{
+        Write-Log -Type Info -Evt "No updates."
+        Write-Log -Type Info -Evt "Process finished"
+    }
+
+    If ($Null -ne $LogHistory)
+    {
+        ## Cleanup logs.
+        Write-Log -Type Info -Evt "Deleting logs older than: $LogHistory days"
+        Get-ChildItem -Path "$LogPath\Office-Update_*" -File | Where-Object CreationTime -lt (Get-Date).AddDays(-$LogHistory) | Remove-Item -Recurse
+    }
 }
 ## End
