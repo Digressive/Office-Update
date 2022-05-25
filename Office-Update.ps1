@@ -94,12 +94,9 @@
     Configures the utility to connect to the SMTP server using SSL.
 
     .EXAMPLE
-    Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update'
-    -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
-
+    Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs
     The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files
-    directory \\Apps01\Software\Office365. Any update files older than 30 days will be removed. If the download is successful the log
-    file will be output to C:\scripts\logs and e-mailed with a custom subject line.
+    directory: \\Apps01\Software\Office365. Any update files older than 30 days will be removed, and a log file will be generated.
 #>
 
 ## Set up command line switches.
@@ -109,6 +106,7 @@ Param(
     [ValidateScript({Test-Path $_ -PathType 'Container'})]
     $OfficeSrc,
     [alias("Config")]
+    [ValidateScript({Test-Path -Path $_ -PathType Leaf})]
     $Cfg,
     [alias("Days")]
     $Time,
@@ -159,12 +157,12 @@ If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
 {
     Write-Host "Usage:"
     Write-Host "From an elevated terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30"
-    Write-Host "This will update the office installation files in the specified directory."
-    Write-Host ""
+    Write-Host "This will update the office installation files in the specified directory, and delete update files older than 30 days"
     Write-Host ""
     Write-Host "To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number]."
     Write-Host "Run with no ASCII banner: -NoBanner"
     Write-Host ""
+    Write-Host "SOmething something EMail output options...."
 }
 
 else {
