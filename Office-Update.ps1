@@ -393,7 +393,7 @@ else {
                     $SmtpPort = "25"
                 }
 
-                ## Setting the contents of the log to be the e-mail body. 
+                ## Setting the contents of the log to be the e-mail body.
                 $MailBody = Get-Content -Path $Log | Out-String
 
                 ## If an smtp password is configured, get the username and password together for authentication.
