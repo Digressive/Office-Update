@@ -186,9 +186,7 @@ else {
     If ($LogPath)
     {
         ## Make sure the log directory exists.
-        $LogPathFolderT = Test-Path $LogPath
-
-        If ($LogPathFolderT -eq $False)
+        If ((Test-Path -Path $LogPath) -eq $False)
         {
             New-Item $LogPath -ItemType Directory -Force | Out-Null
         }
@@ -196,9 +194,7 @@ else {
         $LogFile = ("Office-Update_{0:yyyy-MM-dd_HH-mm-ss}.log" -f (Get-Date))
         $Log = "$LogPath\$LogFile"
 
-        $LogT = Test-Path -Path $Log
-
-        If ($LogT)
+        If (Test-Path -Path $Log)
         {
             Clear-Content -Path $Log
         }
