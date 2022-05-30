@@ -26,7 +26,7 @@ Join the [Discord](http://discord.gg/5ZsnJ5k) or Tweet me if you have questions:
 * The utility requires at least PowerShell 5.0.
 * This utility has been tested on Windows 11, Windows 10, Windows Server 2022, Windows Server 2019 and Windows Server 2016.
 
-### Folder Structure
+## Folder Structure
 
 This utility requires a specific folder structure in order to operate, it expects the Office Deployment Tool and the configuration xml file to be in the same folder. Additionally, the source path of the Office installation files in the configuration xml file should be set to the same location. For example:
 
@@ -36,7 +36,7 @@ This utility requires a specific folder structure in order to operate, it expect
 
 This configuration will result in the Office update files being downloaded and stored in: ```\\server\share\Office-2019-x64\Office\Data```
 
-### Generating A Password File
+## Generating A Password File
 
 The password used for SMTP server authentication must be in an encrypted text file. To generate the password file, run the following command in PowerShell on the computer and logged in with the user that will be running the utility. When you run the command, you will be prompted for a username and password. Enter the username and password you want to use to authenticate to your SMTP server.
 
@@ -49,7 +49,7 @@ $creds.Password | ConvertFrom-SecureString | Set-Content c:\scripts\ps-script-pw
 
 After running the commands, you will have a text file containing the encrypted password. When configuring the -Pwd switch enter the path and file name of this file.
 
-### Configuration
+## Configuration
 
 Here’s a list of all the command line switches and example configurations.
 
@@ -69,7 +69,7 @@ Here’s a list of all the command line switches and example configurations.
 | -Pwd | The txt file containing the encrypted password for SMTP authentication. | ```C:\scripts\ps-script-pwd.txt``` |
 | -UseSsl | Configures the utility to connect to the SMTP server using SSL. | N/A |
 
-### Example
+## Example
 
 ``` txt
 Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
