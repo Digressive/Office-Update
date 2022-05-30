@@ -108,7 +108,7 @@ Param(
     [alias("Config")]
     $Cfg,
     [alias("Days")]
-    $Time,
+    $UpdateHistory,
     [alias("L")]
     $LogPath,
     [alias("LogRotate")]
@@ -161,19 +161,21 @@ If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
     To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number].
     Run with no ASCII banner: -NoBanner
 
-    To use the email function:
-    Specify the subject line with -Subject ""'Office Updated'"" If you leave this blank a default subject will be used
+    To use the 'email log' function:
+    Specify the subject line with -Subject ""'[subject line]'"" If you leave this blank a default subject will be used
     Make sure to encapsulate it with double & single quotes as per the example for Powershell to read it correctly.
-    Specify the 'to' address with -SendTo me@contoso.com
-    Specify the 'from' address with -From Office-Update@contoso.com
-    Specify the SMTP server with -Smtp smtp-mail.outlook.com
-    Specify the port to use with the SMTP server with -Port 587. If none is specified then the default of 25 will be used.
-    Specify the user to access SMTP with -User example@contoso.com
+    Specify the 'to' address with -SendTo [example@contoso.com]
+    Specify the 'from' address with -From [example@contoso.com]
+    Specify the SMTP server with -Smtp [smtp server name]
+    Specify the port to use with the SMTP server with -Port [port number].
+    If none is specified then the default of 25 will be used.
+    Specify the user to access SMTP with -User [example@contoso.com]
     Specify the password file to use with -Pwd [path\]ps-script-pwd.txt.
     Use SSL for SMTP server connection with -UseSsl.
 
-    To generate an encrypted password file run the following commands on the computer and the user that will run the script:"
-
+    To generate an encrypted password file run the following commands
+    on the computer and the user that will run the script:
+"
     Write-Host -Object '    $creds = Get-Credential
     $creds.Password | ConvertFrom-SecureString | Set-Content [path\]ps-script-pwd.txt'
 }
@@ -196,8 +198,6 @@ else {
         {
             Clear-Content -Path $Log
         }
-
-        Add-Content -Path $Log -Encoding ASCII -Value "$(Get-Date -Format "yyyy-MM-dd HH:mm:ss") [INFO] Log started"
     }
 
     ## Function to get date in specific format.
@@ -274,9 +274,9 @@ else {
         Write-Log -Type Conf -Evt "Config file:...........$Cfg."
     }
 
-    If ($Null -ne $Time)
+    If ($Null -ne $UpdateHistory)
     {
-        Write-Log -Type Conf -Evt "Days to keep updates:..$Time days."
+        Write-Log -Type Conf -Evt "Days to keep updates:..$UpdateHistory days."
     }
 
     If ($LogPath)
@@ -286,7 +286,7 @@ else {
 
     If ($Null -ne $LogHistory)
     {
-        Write-Log -Type Conf -Evt "Logs to keep:..........$LogHistory days"
+        Write-Log -Type Conf -Evt "Logs to keep:..........$LogHistory days."
     }
 
     If ($MailTo)
@@ -350,18 +350,18 @@ else {
         Write-Log -Type Info -Evt "Office source files were updated."
         Write-Log -Type Info -Evt "Latest version is: $VerName"
 
-        If ($Null -ne $Time)
+        If ($Null -ne $UpdateHistory)
         {
-            $FilesToDel = Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$Time)
+            $FilesToDel = Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)
 
             If ($FilesToDel.count -ne 0)
             {
                 Write-Log -Type Info -Evt "The following old Office files were removed:"
-                Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$Time)
-                Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$Time)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
+                Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)
+                Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
 
                 ## If configured, remove the old files.
-                Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$Time)} | Remove-Item -Recurse
+                Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Remove-Item -Recurse
             }
         }
 
