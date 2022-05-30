@@ -134,50 +134,48 @@ Param(
 
 If ($NoBanner -eq $False)
 {
-    Write-Host -Object ""
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "     ___  __  __ _                            _       _         "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "    /___\/ _|/ _(_) ___ ___   /\ /\ _ __   __| | __ _| |_ ___   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   //  // |_| |_| |/ __/ _ \ / / \ \ '_ \ / _  |/ _  | __/ _ \  "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/  "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|  "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                   |_|                          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "         _   _ _ _ _                                            "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   /\ /\| |_(_) (_) |_ _   _             Mike Galvin            "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  / / \ \ __| | | | __| | | |          https://gal.vin          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "  \ \_/ / |_| | | | |_| |_| |                                   "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "   \___/ \__|_|_|_|\__|\__, |         Version 22.05.25          "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                       |___/         See -help for usage        "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "                                                                "
-    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "            Donate: https://www.paypal.me/digressive            "
-    Write-Host -Object ""
+    Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "
+       ___  __  __ _                            _       _           
+      /___\/ _|/ _(_) ___ ___   /\ /\ _ __   __| | __ _| |_ ___     
+     //  // |_| |_| |/ __/ _ \ / / \ \ '_ \ / _  |/ _  | __/ _ \    
+    / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/    
+    \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|    
+                                     |_|                            
+           _   _ _ _ _                                              
+     /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
+    / / \ \ __| | | | __| | | |          https://gal.vin            
+    \ \_/ / |_| | | | |_| |_| |                                     
+     \___/ \__|_|_|_|\__|\__, |         Version 22.05.25            
+                         |___/         See -help for usage          
+                                                                    
+              Donate: https://www.paypal.me/digressive              
+"
 }
 
 If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
 {
-    Write-Host "Usage:"
-    Write-Host "From a terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30"
-    Write-Host "This will update the office installation files in the specified directory, and delete update files older than 30 days"
-    Write-Host ""
-    Write-Host "To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number]."
-    Write-Host "Run with no ASCII banner: -NoBanner"
-    Write-Host ""
-    Write-Host "To use the email function:"
-    Write-Host "Specify the subject line with -Subject ""'Office Updated'"" If you leave this blank a default subject will be used"
-    Write-Host "Make sure to encapsulate it with double & single quotes as per the example for Powershell to read it correctly."
-    Write-Host "Specify the 'to' address with -SendTo me@contoso.com"
-    Write-Host "Specify the 'from' address with -From Office-Update@contoso.com"
-    Write-Host "Specify the SMTP server with -Smtp smtp-mail.outlook.com"
-    Write-Host "Specify the port to use with the SMTP server with -Port 587. If none is specified then the default of 25 will be used."
-    Write-Host "Specify the user to access SMTP with -User example@contoso.com"
-    Write-Host "Specify the password file to use with -Pwd [path\]ps-script-pwd.txt."
-    Write-Host ""
-    Write-Host "To generate an encrypted password file run the following commands on the computer and the user that will run the script:"
-    Write-Host ""
-    Write-Host '$creds = Get-Credential'
-    Write-Host '$creds.Password | ConvertFrom-SecureString | Set-Content [path\]ps-script-pwd.txt'
-    Write-Host ""
-    Write-Host "Enable SSL connections with -UseSsl"
-    Write-Host ""
+    Write-Host -Object "Usage:
+    From a terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30
+    This will update the office installation files in the specified directory, and delete update files older than 30 days
+
+    To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number].
+    Run with no ASCII banner: -NoBanner
+
+    To use the email function:
+    Specify the subject line with -Subject ""'Office Updated'"" If you leave this blank a default subject will be used
+    Make sure to encapsulate it with double & single quotes as per the example for Powershell to read it correctly.
+    Specify the 'to' address with -SendTo me@contoso.com
+    Specify the 'from' address with -From Office-Update@contoso.com
+    Specify the SMTP server with -Smtp smtp-mail.outlook.com
+    Specify the port to use with the SMTP server with -Port 587. If none is specified then the default of 25 will be used.
+    Specify the user to access SMTP with -User example@contoso.com
+    Specify the password file to use with -Pwd [path\]ps-script-pwd.txt.
+    Use SSL for SMTP server connection with -UseSsl.
+
+    To generate an encrypted password file run the following commands on the computer and the user that will run the script:"
+
+    Write-Host -Object '    $creds = Get-Credential
+    $creds.Password | ConvertFrom-SecureString | Set-Content [path\]ps-script-pwd.txt'
 }
 
 else {
@@ -213,7 +211,7 @@ else {
     {
         If ($Type -eq "Info")
         {
-            If ($Null -ne $LogPath)
+            If ($LogPath)
             {
                 Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [INFO] $Evt"
             }
@@ -223,7 +221,7 @@ else {
 
         If ($Type -eq "Succ")
         {
-            If ($Null -ne $LogPath)
+            If ($LogPath)
             {
                 Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [SUCCESS] $Evt"
             }
@@ -233,7 +231,7 @@ else {
 
         If ($Type -eq "Err")
         {
-            If ($Null -ne $LogPath)
+            If ($LogPath)
             {
                 Add-Content -Path $Log -Encoding ASCII -Value "$(Get-DateFormat) [ERROR] $Evt"
             }
@@ -243,7 +241,7 @@ else {
 
         If ($Type -eq "Conf")
         {
-            If ($Null -ne $LogPath)
+            If ($LogPath)
             {
                 Add-Content -Path $Log -Encoding ASCII -Value "$Evt"
             }
@@ -266,12 +264,12 @@ else {
     Write-Log -Type Conf -Evt "Utility Version:.......22.05.25"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
-    If ($Null -ne $OfficeSrc)
+    If ($OfficeSrc)
     {
         Write-Log -Type Conf -Evt "Office folder:.........$OfficeSrc."
     }
 
-    If ($Null -ne $Cfg)
+    If ($Cfg)
     {
         Write-Log -Type Conf -Evt "Config file:...........$Cfg."
     }
@@ -281,7 +279,7 @@ else {
         Write-Log -Type Conf -Evt "Days to keep updates:..$Time days."
     }
 
-    If ($Null -ne $LogPath)
+    If ($LogPath)
     {
         Write-Log -Type Conf -Evt "Logs directory:........$LogPath."
     }
@@ -354,16 +352,16 @@ else {
 
         If ($Null -ne $Time)
         {
-            $FilesToDel = Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime –lt (Get-Date).AddDays(-$Time)
+            $FilesToDel = Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$Time)
 
             If ($FilesToDel.count -ne 0)
             {
                 Write-Log -Type Info -Evt "The following old Office files were removed:"
-                Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime –lt (Get-Date).AddDays(-$Time)
+                Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$Time)
                 Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$Time)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
 
                 ## If configured, remove the old files.
-                Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime –lt (Get-Date).AddDays(-$Time)} | Remove-Item -Recurse
+                Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$Time)} | Remove-Item -Recurse
             }
         }
 
@@ -372,53 +370,58 @@ else {
         ## If logging is configured then finish the log file.
         If ($LogPath)
         {
-            Add-Content -Path $Log -Encoding ASCII -Value "$(Get-Date -Format "yyyy-MM-dd HH:mm:ss") [INFO] Log finished"
-
-            ## This whole block is for e-mail, if it is configured.
-            If ($SmtpServer)
+            If (Test-Path -Path $Log)
             {
-                ## Default e-mail subject if none is configured.
-                If ($Null -eq $MailSubject)
+                ## This whole block is for e-mail, if it is configured.
+                If ($SmtpServer)
                 {
-                    $MailSubject = "Office Update Utility Log"
-                }
-
-                ## Default Smtp Port if none is configured.
-                If ($Null -eq $SmtpPort)
-                {
-                    $SmtpPort = "25"
-                }
-
-                ## Setting the contents of the log to be the e-mail body.
-                $MailBody = Get-Content -Path $Log | Out-String
-
-                ## If an smtp password is configured, get the username and password together for authentication.
-                ## If an smtp password is not provided then send the e-mail without authentication and obviously no SSL.
-                If ($SmtpPwd)
-                {
-                    $SmtpPwdEncrypt = Get-Content $SmtpPwd | ConvertTo-SecureString
-                    $SmtpCreds = New-Object System.Management.Automation.PSCredential -ArgumentList ($SmtpUser, $SmtpPwdEncrypt)
-
-                    ## If -ssl switch is used, send the email with SSL.
-                    ## If it isn't then don't use SSL, but still authenticate with the credentials.
-                    If ($UseSsl)
+                    ## Default e-mail subject if none is configured.
+                    If ($Null -eq $MailSubject)
                     {
-                        Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort -UseSsl -Credential $SmtpCreds
+                        $MailSubject = "Office Update Utility Log"
+                    }
+
+                    ## Default Smtp Port if none is configured.
+                    If ($Null -eq $SmtpPort)
+                    {
+                        $SmtpPort = "25"
+                    }
+
+                    ## Setting the contents of the log to be the e-mail body.
+                    $MailBody = Get-Content -Path $Log | Out-String
+
+                    ## If an smtp password is configured, get the username and password together for authentication.
+                    ## If an smtp password is not provided then send the e-mail without authentication and obviously no SSL.
+                    If ($SmtpPwd)
+                    {
+                        $SmtpPwdEncrypt = Get-Content $SmtpPwd | ConvertTo-SecureString
+                        $SmtpCreds = New-Object System.Management.Automation.PSCredential -ArgumentList ($SmtpUser, $SmtpPwdEncrypt)
+
+                        ## If -ssl switch is used, send the email with SSL.
+                        ## If it isn't then don't use SSL, but still authenticate with the credentials.
+                        If ($UseSsl)
+                        {
+                            Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort -UseSsl -Credential $SmtpCreds
+                        }
+
+                        else {
+                            Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort -Credential $SmtpCreds
+                        }
                     }
 
                     else {
-                        Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort -Credential $SmtpCreds
+                        Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort
                     }
                 }
+            }
 
-                else {
-                    Send-MailMessage -To $MailTo -From $MailFrom -Subject $MailSubject -Body $MailBody -SmtpServer $SmtpServer -Port $SmtpPort
-                }
+            else {
+                Write-Host -ForegroundColor Red -BackgroundColor Black -Object "There's no log file to email."
             }
         }
     }
 
-    else{
+    else {
         Write-Log -Type Info -Evt "No updates."
         Write-Log -Type Info -Evt "Process finished"
     }
