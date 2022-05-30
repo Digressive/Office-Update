@@ -259,7 +259,6 @@ else {
     ##
     ## Display the current config and log if configured.
     ##
-
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
     Write-Log -Type Conf -Evt "Utility Version:.......22.05.25"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
