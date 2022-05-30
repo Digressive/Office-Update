@@ -60,6 +60,8 @@ Here’s a list of all the command line switches and example configurations.
 | -Days | The number of days that you wish to keep old update files for. If you do not configure this option, no old files will be removed. | 30 |
 | -NoBanner | Use this option to hide the ASCII art title in the console. | N/A |
 | -L | The path to output the log file to. The file name will be Office-Update_YYYY-MM-dd_HH-mm-ss.log. Do not add a trailing \ backslash. | ```C:\scripts\logs``` |
+| -LogRotate | Instructs the utility to remove logs older than a specified number of days. | 30 |
+| -Help | Show usage instructions. | N/A |
 | -Subject | The subject line for the e-mail log. Encapsulate with single or double quotes. If no subject is specified, the default of "Office Update Utility Log" will be used. | 'Server: Notification' |
 | -SendTo | The e-mail address the log should be sent to. | me@contoso.com |
 | -From | The e-mail address the log should be sent from. | Office-Update@contoso.com |
@@ -72,7 +74,7 @@ Here’s a list of all the command line switches and example configurations.
 ## Example
 
 ``` txt
-Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -Subject 'Server: Office Update' -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
 ```
 
-The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory ```\\Apps01\Software\Office365```. Any update files older than 30 days will be removed. If the download is successful the log file will be output to ```C:\scripts\logs``` and e-mailed with a custom subject line.
+The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory ```\\Apps01\Software\Office365```. Any update files older than 30 days will be removed. If the download is successful a log file will be output and e-mailed.
