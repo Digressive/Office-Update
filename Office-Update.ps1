@@ -135,20 +135,20 @@ Param(
 If ($NoBanner -eq $False)
 {
     Write-Host -ForegroundColor Yellow -BackgroundColor Black -Object "
-       ___  __  __ _                            _       _           
-      /___\/ _|/ _(_) ___ ___   /\ /\ _ __   __| | __ _| |_ ___     
-     //  // |_| |_| |/ __/ _ \ / / \ \ '_ \ / _  |/ _  | __/ _ \    
-    / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/    
-    \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|    
-                                     |_|                            
-           _   _ _ _ _                                              
-     /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
-    / / \ \ __| | | | __| | | |          https://gal.vin            
-    \ \_/ / |_| | | | |_| |_| |                                     
-     \___/ \__|_|_|_|\__|\__, |         Version 22.05.25            
-                         |___/         See -help for usage          
-                                                                    
-              Donate: https://www.paypal.me/digressive              
+           ___  __  __ _                            _       _           
+          /___\/ _|/ _(_) ___ ___   /\ /\ _ __   __| | __ _| |_ ___     
+         //  // |_| |_| |/ __/ _ \ / / \ \ '_ \ / _  |/ _  | __/ _ \    
+        / \_//|  _|  _| | (_|  __/ \ \_/ / |_) | (_| | (_| | ||  __/    
+        \___/ |_| |_| |_|\___\___|  \___/| .__/ \__,_|\__,_|\__\___|    
+                                         |_|                            
+               _   _ _ _ _                                              
+         /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
+        / / \ \ __| | | | __| | | |          https://gal.vin            
+        \ \_/ / |_| | | | |_| |_| |                                     
+         \___/ \__|_|_|_|\__|\__, |         Version 22.05.25            
+                             |___/         See -help for usage          
+                                                                        
+                  Donate: https://www.paypal.me/digressive              
 "
 }
 
@@ -339,6 +339,7 @@ else {
     ## Location of the office source files.
     $UpdateFolder = "$OfficeSrc\Office\Data"
 
+    ## START OF NEW STUFF
     ## Check the last write time of the office source files folder if it is greater than the previous day.
     $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (Get-Date).AddDays(-1)).Count
 
