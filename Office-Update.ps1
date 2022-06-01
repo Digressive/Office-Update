@@ -103,7 +103,7 @@
 [CmdletBinding()]
 Param(
     [alias("Office")]
-    [ValidateScript({Test-Path $_ -PathType 'Container'})]
+    [ValidateScript({Test-Path -Path $_ -PathType 'Container'})]
     $OfficeSrc,
     [alias("Config")]
     $Cfg,
@@ -339,7 +339,7 @@ else {
     ## Location of the office source files.
     $UpdateFolder = "$OfficeSrc\Office\Data"
 
-    ## START OF NEW STUFF
+    ## START OF NEW STUFF TESTING
     ## Check the last write time of the office source files folder if it is greater than the previous day.
     $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (Get-Date).AddDays(-1)).Count
 
