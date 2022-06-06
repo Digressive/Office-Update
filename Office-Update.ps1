@@ -323,7 +323,7 @@ else {
         Write-Log -Type Conf -Evt "SMTP pwd file:.........$SmtpPwd."
     }
 
-    If ($SmtpPwd)
+    If ($SmtpServer)
     {
         Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
     }
