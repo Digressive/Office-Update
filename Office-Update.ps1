@@ -41,7 +41,6 @@
 [CmdletBinding()]
 Param(
     [alias("Office")]
-    [ValidateScript({Test-Path -Path $_ -PathType 'Container'})]
     $OfficeSrc,
     [alias("Config")]
     $Cfg,
@@ -197,10 +196,18 @@ else {
         }
     }
 
-    If ($Null -eq $LogPathUsr -And $SmtpServer)
+    If ($Null -eq $OfficeSrc)
     {
-        Write-Log -Type Err -Evt "You must specify -L [path\] to use the email log function."
+        Write-Log -Type Err -Evt "You must specify -Office [path\]."
         Exit
+    }
+
+    else {
+        If ($Null -eq $LogPathUsr -And $SmtpServer)
+        {
+            Write-Log -Type Err -Evt "You must specify -L [path\] to use the email log function."
+            Exit
+        }
     }
 
     ## getting Windows Version info
@@ -292,7 +299,6 @@ else {
     ## Location of the office source files.
     $UpdateFolder = "$OfficeSrc\Office\Data"
 
-    ## START OF NEW STUFF TESTING
     ## Check the last write time of the office source files folder if it is greater than the previous day.
     $Updated = (Get-ChildItem -Path $UpdateFolder | Where-Object CreationTime -gt (Get-Date).AddDays(-1)).Count
 
