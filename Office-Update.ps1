@@ -30,73 +30,11 @@
 
 <#
     .SYNOPSIS
-    Office Update Utility - Microsoft Office Update Manager.
+    Office Update Utility - Microsoft Office Update Manager
 
     .DESCRIPTION
-    Checks for updates of Microsoft Office
-
-    To send a log file via e-mail using ssl and an SMTP password you must generate an encrypted password file.
-    The password file is unique to both the user and machine.
-
-    To create the password file run this command as the user and on the machine that will use the file:
-
-    $creds = Get-Credential
-    $creds.Password | ConvertFrom-SecureString | Set-Content C:\scripts\ps-script-pwd.txt
-
-    .PARAMETER Office
-    The folder containing the Office Deployment Tool (ODT).
-
-    .PARAMETER Config
-    The name of the configuration xml file for the Office Deployment Tool.
-    It must be located in the same folder as the Office deployment tool.
-
-    .PARAMETER Days
-    The number of days that you wish to keep old update files for.
-    If you do not configure this option, no old update files will be removed.
-
-    .PARAMETER NoBanner
-    Use this option to hide the ASCII art title in the console.
-
-    .PARAMETER L
-    The path to output the log file to.
-    The file name will be Office-Update_YYYY-MM-dd_HH-mm-ss.log
-    Do not add a trailing \ backslash.
-
-    .PARAMETER LogRotate
-    Instructs the utility to remove logs older than a specified number of days.
-
-    .PARAMETER Help
-    Show usage help in the command line.
-
-    .PARAMETER Subject
-    The subject line for the e-mail log. Encapsulate with single or double quotes.
-    If no subject is specified, the default of "Office Update Utility Log" will be used.
-
-    .PARAMETER SendTo
-    The e-mail address the log should be sent to.
-
-    .PARAMETER From
-    The e-mail address the log should be sent from.
-
-    .PARAMETER Smtp
-    The DNS name or IP address of the SMTP server.
-
-    .PARAMETER Port
-    The Port that should be used for the SMTP server.
-
-    .PARAMETER User
-    The user account to authenticate to the SMTP server.
-
-    .PARAMETER Pwd
-    The txt file containing the encrypted password for SMTP authentication.
-
-    .PARAMETER UseSsl
-    Configures the utility to connect to the SMTP server using SSL.
-
-    .EXAMPLE
-    Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs
-    The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files
-    directory: \\Apps01\Software\Office365. Any update files older than 30 days will be removed, and a log file will be generated.
+    Checks for updates of Microsoft Office and removes old versions.
+    Run with -help or no arguments for usage.
 #>
 
 ## Set up command line switches.
@@ -155,20 +93,26 @@ If ($NoBanner -eq $False)
 If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
 {
     Write-Host -Object "Usage:
-    From a terminal run: [path\]Office-Update.ps1 -Office [path\]Office365 -Config config-365-x64.xml -Days 30
-    This will update the office installation files in the specified directory, and delete update files older than 30 days
+    From a terminal run: [path\]Office-Update.ps1 -Office [path\] -Config [file name.xml] -Days [number]
+    This will update the office installation files in the specified directory, and delete update files older than X days
 
-    To output a log: -L [path]. To remove logs produced by the utility older than X days: -LogRotate [number].
+    To output a log: -L [path\].
+    To remove logs produced by the utility older than X days: -LogRotate [number].
     Run with no ASCII banner: -NoBanner
 
     To use the 'email log' function:
     Specify the subject line with -Subject ""'[subject line]'"" If you leave this blank a default subject will be used
     Make sure to encapsulate it with double & single quotes as per the example for Powershell to read it correctly.
+
     Specify the 'to' address with -SendTo [example@contoso.com]
+    For multiple address, separate with a comma.
+
     Specify the 'from' address with -From [example@contoso.com]
     Specify the SMTP server with -Smtp [smtp server name]
+
     Specify the port to use with the SMTP server with -Port [port number].
     If none is specified then the default of 25 will be used.
+
     Specify the user to access SMTP with -User [example@contoso.com]
     Specify the password file to use with -Pwd [path\]ps-script-pwd.txt.
     Use SSL for SMTP server connection with -UseSsl.

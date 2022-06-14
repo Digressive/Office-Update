@@ -4,26 +4,27 @@ Microsoft Office Update Manager
 
 For full change log and more information, [visit my site.](https://gal.vin/utils/office-update-utility/)
 
-Please consider supporting my work:
+Office Update Utility is available from:
 
-* Sign up [using Patreon.](https://www.patreon.com/mikegalvin)
-* Support with a one-time payment [using PayPal.](https://www.paypal.me/digressive)
-
-Office Update Utility can also be downloaded from:
-
+* [GitHub](https://github.com/Digressive/Office-Update)
 * [The Microsoft PowerShell Gallery](https://www.powershellgallery.com/packages/Office-Update)
 
-Join the [Discord](http://discord.gg/5ZsnJ5k) or Tweet me if you have questions: [@mikegalvin_](https://twitter.com/mikegalvin_)
+Please consider supporting my work:
+
+* Sign up using [Patreon](https://www.patreon.com/mikegalvin).
+* Support with a one-time donation using [PayPal](https://www.paypal.me/digressive).
+
+If you’d like to contact me, please leave a comment, send me a [tweet or DM](https://twitter.com/mikegalvin_), or you can join my [Discord server](https://discord.gg/5ZsnJ5k).
 
 -Mike
 
 ## Features and Requirements
 
 * This utility will check for and download update files for Microsoft Office.
-* It can be configured to remove old update files.
-* It can be configured to create and e-mail a log file.
-* The utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
-* The utility requires at least PowerShell 5.0.
+* It can also remove old update files.
+* It can create and e-mail a log file when there are updates.
+* This utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
+* This utility requires at least PowerShell 5.0.
 * This utility has been tested on Windows 11, Windows 10, Windows Server 2022, Windows Server 2019 and Windows Server 2016.
 
 ## Folder Structure
@@ -55,26 +56,26 @@ Here’s a list of all the command line switches and example configurations.
 
 | Command Line Switch | Description | Example |
 | ------------------- | ----------- | ------- |
-| -Office | The folder containing the Office Deployment Tool (ODT). | ```\\server\share\office-365-x64\setup.exe``` |
-| -Config | The name of the configuration xml file for the Office ODT. It must be located in the same folder as the ODT. | config-365-x64.xml |
-| -Days | The number of days that you wish to keep old update files for. If you do not configure this option, no old files will be removed. | 30 |
+| -Office | The folder containing the Office Deployment Tool (ODT). | [path\] |
+| -Config | The name of the configuration xml file for the Office ODT. It must be located in the same folder as the ODT. | [file name.xml] |
+| -Days | The number of days that you wish to keep old update files for. If you do not configure this option, no old files will be removed. | [number] |
+| -L | The path to output the log file to. | [path\] |
+| -LogRotate | Remove logs produced by the utility older than X days | [number] |
 | -NoBanner | Use this option to hide the ASCII art title in the console. | N/A |
-| -L | The path to output the log file to. The file name will be Office-Update_YYYY-MM-dd_HH-mm-ss.log. Do not add a trailing \ backslash. | ```C:\scripts\logs``` |
-| -LogRotate | Instructs the utility to remove logs older than a specified number of days. | 30 |
-| -Help | Show usage instructions. | N/A |
-| -Subject | The subject line for the e-mail log. Encapsulate with single or double quotes. If no subject is specified, the default of "Office Update Utility Log" will be used. | 'Server: Notification' |
-| -SendTo | The e-mail address the log should be sent to. | me@contoso.com |
-| -From | The e-mail address the log should be sent from. | Office-Update@contoso.com |
-| -Smtp | The DNS name or IP address of the SMTP server. | smtp-mail.outlook.com OR smtp.office365.com |
-| -Port | The Port that should be used for the SMTP server. If none is specified then the default of 25 will be used. | 587 |
-| -User | The user account to authenticate to the SMTP server. | example@contoso.com |
-| -Pwd | The txt file containing the encrypted password for SMTP authentication. | ```C:\scripts\ps-script-pwd.txt``` |
+| -Help | Display usage information. No arguments also displays help. | N/A |
+| -Subject | Specify a subject line. If you leave this blank the default subject will be used | "'[Server: Notification]'" |
+| -SendTo | The e-mail address the log should be sent to. For multiple address, separate with a comma. | [example@contoso.com] |
+| -From | The e-mail address the log should be sent from. | [example@contoso.com] |
+| -Smtp | The DNS name or IP address of the SMTP server. | [smtp server address] |
+| -Port | The Port that should be used for the SMTP server. If none is specified then the default of 25 will be used. | [port number] |
+| -User | The user account to authenticate to the SMTP server. | [example@contoso.com] |
+| -Pwd | The txt file containing the encrypted password for SMTP authentication. | [path\]ps-script-pwd.txt |
 | -UseSsl | Configures the utility to connect to the SMTP server using SSL. | N/A |
 
 ## Example
 
 ``` txt
-Office-Update.ps1 -Office \\Apps01\Software\Office365 -Config config-365-x64.xml -Days 30 -L C:\scripts\logs -SendTo me@contoso.com -From Office-Update@contoso.com -Smtp smtp-mail.outlook.com -User me@contoso.com -Pwd P@ssw0rd -UseSsl
+[path\]Office-Update.ps1 -Office [path\] -Config [file name.xml] -Days [number]
 ```
 
-The above command will download any Office updates for the version and channel configured in config-365-x64.xml to the Office files directory ```\\Apps01\Software\Office365```. Any update files older than 30 days will be removed. If the download is successful a log file will be output and e-mailed.
+This will update the office installation files in the specified directory, and delete update files older than X days
