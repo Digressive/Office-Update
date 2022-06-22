@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.05.25
+.VERSION 22.06.22
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -82,7 +82,7 @@ If ($NoBanner -eq $False)
          /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
         / / \ \ __| | | | __| | | |          https://gal.vin            
         \ \_/ / |_| | | | |_| |_| |                                     
-         \___/ \__|_|_|_|\__|\__, |         Version 22.05.25            
+         \___/ \__|_|_|_|\__|\__, |         Version 22.06.22            
                              |___/         See -help for usage          
                                                                         
                   Donate: https://www.paypal.me/digressive              
@@ -220,7 +220,7 @@ else {
     ## Display the current config and log if configured.
     ##
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.05.25"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.06.22"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($OfficeSrc)
@@ -317,10 +317,14 @@ else {
             {
                 Write-Log -Type Info -Evt "The following old Office files were removed:"
                 Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)
-                Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
+
+                If ($LogPathUsr)
+                {
+                    Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
+                }
 
                 ## If configured, remove the old files.
-                Get-ChildItem $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Remove-Item -Recurse
+                Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Remove-Item -Recurse
             }
         }
 
