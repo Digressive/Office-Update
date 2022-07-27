@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.06.22
+.VERSION 22.07.27
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -44,8 +44,6 @@ Param(
     $OfficeSrc,
     [alias("Config")]
     $Cfg,
-    [alias("Days")]
-    $UpdateHistory,
     [alias("L")]
     $LogPathUsr,
     [alias("LogRotate")]
@@ -82,7 +80,7 @@ If ($NoBanner -eq $False)
          /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
         / / \ \ __| | | | __| | | |          https://gal.vin            
         \ \_/ / |_| | | | |_| |_| |                                     
-         \___/ \__|_|_|_|\__|\__, |         Version 22.06.22            
+         \___/ \__|_|_|_|\__|\__, |         Version 22.07.27            
                              |___/         See -help for usage          
                                                                         
                   Donate: https://www.paypal.me/digressive              
@@ -92,8 +90,8 @@ If ($NoBanner -eq $False)
 If ($PSBoundParameters.Values.Count -eq 0 -or $Help)
 {
     Write-Host -Object "Usage:
-    From a terminal run: [path\]Office-Update.ps1 -Office [path\] -Config [file name.xml] -Days [number]
-    This will update the office installation files in the specified directory, and delete update files older than X days
+    From a terminal run: [path\]Office-Update.ps1 -Office [path\] -Config [file name.xml]
+    This will update the office installation files in the specified directory, and delete the old update files.
 
     To output a log: -L [path\].
     To remove logs produced by the utility older than X days: -LogRotate [number].
@@ -220,7 +218,7 @@ else {
     ## Display the current config and log if configured.
     ##
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.06.22"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.07.27"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($OfficeSrc)
@@ -231,11 +229,6 @@ else {
     If ($Cfg)
     {
         Write-Log -Type Conf -Evt "Config file:...........$Cfg."
-    }
-
-    If ($Null -ne $UpdateHistory)
-    {
-        Write-Log -Type Conf -Evt "Days to keep updates:..$UpdateHistory days."
     }
 
     If ($LogPathUsr)
@@ -305,27 +298,24 @@ else {
     ## If the Updated variable returns as not 0 then continue.
     If ($Updated -ne 0)
     {
-        $VerName = Get-ChildItem -Path $UpdateFolder -Directory | Sort-Object LastWriteTime | Select-Object -last 1 | Select-Object -ExpandProperty Name
+        $VerName = Get-ChildItem -Path $UpdateFolder -Name -Directory | Measure-Object -Maximum
         Write-Log -Type Info -Evt "Office source files were updated."
-        Write-Log -Type Info -Evt "Latest version is: $VerName"
+        Write-Log -Type Info -Evt "Latest version is: $($VerName.Maximum)"
 
-        If ($Null -ne $UpdateHistory)
+        ## Remove old update folders and then files
+        $Content = Get-ChildItem -Path $UpdateFolder
+
+        If ($Content.count -gt 3)
         {
-            $FilesToDel = Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)
+            $OffDirs = Get-ChildItem -Path $UpdateFolder -Name -Directory
+            $resultDirs = $OffDirs | Measure-Object -Maximum
 
-            If ($FilesToDel.count -ne 0)
-            {
-                Write-Log -Type Info -Evt "The following old Office files were removed:"
-                Get-ChildItem -Path $UpdateFolder | Where-Object LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)
+            Get-ChildItem -Path $UpdateFolder -Directory -Exclude $resultDirs.Maximum | Remove-Item -Recurse
 
-                If ($LogPathUsr)
-                {
-                    Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Select-Object -Property Name, LastWriteTime | Format-Table -HideTableHeaders | Out-File -Append $Log -Encoding ASCII
-                }
+            $OffFiles = Get-ChildItem -Path $UpdateFolder -Name -File -Exclude v64.cab
+            $resultFiles = $OffFiles | Measure-Object -Maximum
 
-                ## If configured, remove the old files.
-                Get-ChildItem -Path $UpdateFolder | Where-Object {$_.LastWriteTime -lt (Get-Date).AddDays(-$UpdateHistory)} | Remove-Item -Recurse
-            }
+            Get-ChildItem -Path $UpdateFolder -File | Where-Object {$_.Name -NotMatch "v64.cab" -And $_.Name -NotMatch $resultFiles.Maximum} | Remove-Item
         }
 
         Write-Log -Type Info -Evt "Process finished"

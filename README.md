@@ -21,7 +21,7 @@ If you’d like to contact me, please leave a comment, send me a [tweet or DM](h
 ## Features and Requirements
 
 * This utility will check for and download update files for Microsoft Office.
-* It can also remove old update files.
+* It will remove old update files and folders.
 * It can create and e-mail a log file when there are updates.
 * This utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
 * This utility requires at least PowerShell 5.0.
@@ -58,7 +58,6 @@ Here’s a list of all the command line switches and example configurations.
 | ------------------- | ----------- | ------- |
 | -Office | The folder containing the Office Deployment Tool (ODT). | [path\] |
 | -Config | The name of the configuration xml file for the Office ODT. It must be located in the same folder as the ODT. | [file name.xml] |
-| -Days | The number of days that you wish to keep old update files for. If you do not configure this option, no old files will be removed. | [number] |
 | -L | The path to output the log file to. | [path\] |
 | -LogRotate | Remove logs produced by the utility older than X days | [number] |
 | -NoBanner | Use this option to hide the ASCII art title in the console. | N/A |
@@ -75,7 +74,7 @@ Here’s a list of all the command line switches and example configurations.
 ## Example
 
 ``` txt
-[path\]Office-Update.ps1 -Office [path\] -Config [file name.xml] -Days [number]
+[path\]Office-Update.ps1 -Office [path\] -Config [file name.xml]
 ```
 
-This will update the office installation files in the specified directory, and delete update files older than X days
+This will update the office installation files in the specified directory, and delete old update files and folders.
