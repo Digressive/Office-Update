@@ -315,7 +315,7 @@ else {
             $OffFiles = Get-ChildItem -Path $UpdateFolder -Name -File -Exclude v64.cab
             $resultFiles = $OffFiles | Measure-Object -Maximum
 
-            Get-ChildItem -Path $UpdateFolder -File | Where-Object {$_.Name -NotMatch "v64.cab" -And $_.Name -NotMatch $resultFiles.Maximum} | Remove-Item
+            Get-ChildItem -Path $UpdateFolder -File | Where-Object {$_.Name -NotMatch "v64.cab" -And $_.Name -NotMatch "v32.cab" -And $_.Name -NotMatch $resultFiles.Maximum} | Remove-Item
         }
 
         Write-Log -Type Info -Evt "Process finished"
