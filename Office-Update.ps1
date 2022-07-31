@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.07.27
+.VERSION 22.07.30
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -80,7 +80,7 @@ If ($NoBanner -eq $False)
          /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
         / / \ \ __| | | | __| | | |          https://gal.vin            
         \ \_/ / |_| | | | |_| |_| |                                     
-         \___/ \__|_|_|_|\__|\__, |         Version 22.07.27            
+         \___/ \__|_|_|_|\__|\__, |         Version 22.07.30            
                              |___/         See -help for usage          
                                                                         
                   Donate: https://www.paypal.me/digressive              
@@ -218,7 +218,7 @@ else {
     ## Display the current config and log if configured.
     ##
     Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.07.27"
+    Write-Log -Type Conf -Evt "Utility Version:.......22.07.30"
     Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
     If ($OfficeSrc)
