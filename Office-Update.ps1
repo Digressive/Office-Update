@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 22.07.30
+.VERSION 23.02.07
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -63,6 +63,9 @@ Param(
     [alias("Pwd")]
     [ValidateScript({Test-Path -Path $_ -PathType Leaf})]
     $SmtpPwd,
+    [Alias("Webhook")]
+    [ValidateScript({Test-Path -Path $_ -PathType Leaf})]
+    [string]$Webh,
     [switch]$UseSsl,
     [switch]$Help,
     [switch]$NoBanner)
@@ -80,7 +83,7 @@ If ($NoBanner -eq $False)
          /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
         / / \ \ __| | | | __| | | |          https://gal.vin            
         \ \_/ / |_| | | | |_| |_| |                                     
-         \___/ \__|_|_|_|\__|\__, |         Version 22.07.30            
+         \___/ \__|_|_|_|\__|\__, |         Version 23.02.07            
                              |___/         See -help for usage          
                                                                         
                   Donate: https://www.paypal.me/digressive              
@@ -194,6 +197,18 @@ else {
         }
     }
 
+    Function UpdateCheck()
+    {
+        $ScriptVersion = "23.02.07"
+        $RawSource = "https://raw.githubusercontent.com/Digressive/Office-Update/master/Office-Update.ps1"
+        $SourceCheck = Invoke-RestMethod -uri "$RawSource"
+        $VerCheck = Select-String -Pattern ".VERSION $ScriptVersion" -InputObject $SourceCheck
+        If ($null -eq $VerCheck)
+        {
+            Write-Log -Type Conf -Evt "*** There is an update available. ***"
+        }
+    }
+
     If ($Null -eq $OfficeSrc)
     {
         Write-Log -Type Err -Evt "You must specify -Office [path\]."
@@ -217,70 +232,66 @@ else {
     ##
     ## Display the current config and log if configured.
     ##
-    Write-Log -Type Conf -Evt "************ Running with the following config *************."
-    Write-Log -Type Conf -Evt "Utility Version:.......22.07.30"
-    Write-Log -Type Conf -Evt "Hostname:..............$Env:ComputerName."
-    Write-Log -Type Conf -Evt "Windows Version:.......$OSV."
+    Write-Log -Type Conf -Evt "--- Running with the following config ---"
+    Write-Log -Type Conf -Evt "Utility Version: 23.02.07"
+    UpdateCheck ## Run Update checker function
+    Write-Log -Type Conf -Evt "Hostname: $Env:ComputerName."
+    Write-Log -Type Conf -Evt "Windows Version: $OSV."
     If ($OfficeSrc)
     {
-        Write-Log -Type Conf -Evt "Office folder:.........$OfficeSrc."
+        Write-Log -Type Conf -Evt "Office folder: $OfficeSrc."
     }
 
     If ($Cfg)
     {
-        Write-Log -Type Conf -Evt "Config file:...........$Cfg."
+        Write-Log -Type Conf -Evt "Config file: $Cfg."
     }
 
     If ($LogPathUsr)
     {
-        Write-Log -Type Conf -Evt "Logs directory:........$LogPath."
+        Write-Log -Type Conf -Evt "Logs directory: $LogPath."
     }
 
     If ($Null -ne $LogHistory)
     {
-        Write-Log -Type Conf -Evt "Logs to keep:..........$LogHistory days."
+        Write-Log -Type Conf -Evt "Logs to keep: $LogHistory days."
+    }
+
+    If ($Webh)
+    {
+        Write-Log -Type Conf -Evt "Webhook file: $Webh."
     }
 
     If ($MailTo)
     {
-        Write-Log -Type Conf -Evt "E-mail log to:.........$MailTo."
+        Write-Log -Type Conf -Evt "E-mail log to: $MailTo."
     }
 
     If ($MailFrom)
     {
-        Write-Log -Type Conf -Evt "E-mail log from:.......$MailFrom."
+        Write-Log -Type Conf -Evt "E-mail log from: $MailFrom."
     }
 
     If ($MailSubject)
     {
-        Write-Log -Type Conf -Evt "E-mail subject:........$MailSubject."
+        Write-Log -Type Conf -Evt "E-mail subject: $MailSubject."
     }
 
     If ($SmtpServer)
     {
-        Write-Log -Type Conf -Evt "SMTP server is:........$SmtpServer."
+        Write-Log -Type Conf -Evt "SMTP server is: $SmtpServer."
     }
 
     If ($SmtpPort)
     {
-        Write-Log -Type Conf -Evt "SMTP Port:.............$SmtpPort."
+        Write-Log -Type Conf -Evt "SMTP Port: $SmtpPort."
     }
 
     If ($SmtpUser)
     {
-        Write-Log -Type Conf -Evt "SMTP user is:..........$SmtpUser."
+        Write-Log -Type Conf -Evt "SMTP auth: Configured"
     }
-
-    If ($SmtpPwd)
-    {
-        Write-Log -Type Conf -Evt "SMTP pwd file:.........$SmtpPwd."
-    }
-
-    If ($SmtpServer)
-    {
-        Write-Log -Type Conf -Evt "-UseSSL switch is:.....$UseSsl."
-    }
-    Write-Log -Type Conf -Evt "************************************************************"
+    Write-Log -Type Conf -Evt "---"
     Write-Log -Type Info -Evt "Process started"
     ##
     ## Display current config ends here.
@@ -372,6 +383,28 @@ else {
             }
         }
         ## End of Email block
+
+        ## Webhook block
+        If ($Webh)
+        {
+            $WebHookUri = Get-Content $Webh
+            $WebHookArr = @()
+
+            $title       = "Office Update Utility"
+            $description = Get-Content -Path $Log | Out-String
+
+            $WebHookObj = [PSCustomObject]@{
+                title = $title
+                description = $description
+            }
+
+            $WebHookArr += $WebHookObj
+            $payload = [PSCustomObject]@{
+                embeds = $WebHookArr
+            }
+
+            Invoke-RestMethod -Uri $WebHookUri -Body ($payload | ConvertTo-Json -Depth 2) -Method Post -ContentType 'application/json'
+        }
     }
 
     else {
