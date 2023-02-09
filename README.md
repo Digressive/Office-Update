@@ -1,6 +1,6 @@
 # Office Update Utility
 
-Microsoft Office Update Manager
+## Microsoft Office Update Manager
 
 For full change log and more information, [visit my site.](https://gal.vin/utils/office-update-utility/)
 
@@ -14,18 +14,19 @@ Please consider supporting my work:
 * Sign up using [Patreon](https://www.patreon.com/mikegalvin).
 * Support with a one-time donation using [PayPal](https://www.paypal.me/digressive).
 
-Please report issues on Github via the issues tab.
+Please report issues on GitHub.
 
+Thanks
 -Mike
 
 ## Features and Requirements
 
 * This utility will check for and download update files for Microsoft Office.
-* It will remove old update files and folders.
-* It can create and e-mail a log file when there are updates.
+* It can also remove old update files.
 * This utility requires the Office Deployment Tool [a free download available here.](https://www.microsoft.com/en-us/download/details.aspx?id=49117)
 * This utility requires at least PowerShell 5.0.
 * This utility has been tested on Windows 11, Windows 10, Windows Server 2022, Windows Server 2019 and Windows Server 2016.
+* The update log can be sent via email and/or webhook.
 
 ## Folder Structure
 
@@ -58,10 +59,12 @@ Here’s a list of all the command line switches and example configurations.
 | ------------------- | ----------- | ------- |
 | -Office | The folder containing the Office Deployment Tool (ODT). | [path\] |
 | -Config | The name of the configuration xml file for the Office ODT. It must be located in the same folder as the ODT. | [file name.xml] |
+| -Days | The number of days that you wish to keep old update files for. If you do not configure this option, no old files will be removed. | [number] |
 | -L | The path to output the log file to. | [path\] |
 | -LogRotate | Remove logs produced by the utility older than X days | [number] |
 | -NoBanner | Use this option to hide the ASCII art title in the console. | N/A |
 | -Help | Display usage information. No arguments also displays help. | N/A |
+| -Webhook | The txt file containing the URI for a webhook to send the log file to. | [path\]webhook.txt |
 | -Subject | Specify a subject line. If you leave this blank the default subject will be used | "'[Server: Notification]'" |
 | -SendTo | The e-mail address the log should be sent to. For multiple address, separate with a comma. | [example@contoso.com] |
 | -From | The e-mail address the log should be sent from. | [example@contoso.com] |
@@ -74,7 +77,68 @@ Here’s a list of all the command line switches and example configurations.
 ## Example
 
 ``` txt
-[path\]Office-Update.ps1 -Office [path\] -Config [file name.xml]
+[path\]Office-Update.ps1 -Office [path\] -Config [file name.xml] -Days [number]
 ```
 
-This will update the office installation files in the specified directory, and delete old update files and folders.
+This will update the office installation files in the specified directory, and delete update files older than X days
+
+## Change Log
+
+### 2023-02-07: Version 23.02.07
+
+* Added script update checker - shows if an update is available in the log and console.
+* Added webhook option to send log file to.
+* Removed SMTP authentication details from the 'Config' report. Now it just shows as 'configured' if SMTP user is configured. To be clear: no passwords were ever shown or stored in plain text.
+
+### 2022-07-31: Version 22.07.30
+
+* Changed how the removal of old files works. Old versions will be removed regardless, -Days option has been removed.
+
+### 2022-06-22: Version 22.06.22
+
+* Fixed an issue where If -L [path\] not configured then a non fatal error would occur as no log path was specified for the log to be output to.
+
+### 2022-06-14: Version 22.05.25
+
+* Added new feature: log can now be emailed to multiple addresses.
+* Added checks and balances to help with configuration as I'm very aware that the initial configuration can be troublesome. Running the utility manually is a lot more friendly and step-by-step now.
+* Added -Help to give usage instructions in the terminal. Running the script with no options will also trigger the -help switch.
+* Cleaned user entered paths so that trailing slashes no longer break things or have otherwise unintended results.
+* Added -LogRotate [days] to removed old logs created by the utility.
+* Streamlined config report so non configured options are not shown.
+* Added donation link to the ASCII banner.
+* Cleaned up code, removed unneeded log noise.
+
+### 2022-05-25: Version 22.05.25
+
+* Added -Help to give usage instructions in the terminal. Also running the script with no options will also trigger the -help switch.
+* Streamlined config report so non configured options are not shown.
+* Added a -LogRotate option to delete logs older than X number of days.
+
+### 2021-12-06: Version 21.12.06
+
+* Fixed problem with Hostname not displaying.
+
+### 2021-12-04: Version 21.12.04
+
+* Configured logs path now is created, if it does not exist.
+* Added OS version info.
+* Added an option to specify the Port for SMTP communication.
+
+### 2020-03-03: Version 2020.03.01 'Crosshair'
+
+New features:
+
+* Refactored code.
+* Fully backwards compatible.
+* Added ASCII banner art when run in the console.
+* Added option to disable the ASCII banner art.
+* Config report matches design of Image Factory Utility.
+
+### 2019-09-04 v1.1
+
+* Added custom subject line for e-mail.
+
+### 2019-06-16 v1.0
+
+* Initial release.
