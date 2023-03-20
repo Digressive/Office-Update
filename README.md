@@ -38,7 +38,7 @@ This utility requires a specific folder structure in order to operate, it expect
 
 This configuration will result in the Office update files being downloaded and stored in: ```\\server\share\Office-2019-x64\Office\Data```
 
-## Generating A Password File
+## Generating A Password File For SMTP Authentication
 
 The password used for SMTP server authentication must be in an encrypted text file. To generate the password file, run the following command in PowerShell on the computer and logged in with the user that will be running the utility. When you run the command, you will be prompted for a username and password. Enter the username and password you want to use to authenticate to your SMTP server.
 
