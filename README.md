@@ -84,6 +84,10 @@ This will update the office installation files in the specified directory, and d
 
 ## Change Log
 
+### 2023-04-28: Version 23.04.28
+
+* Minor improvement to update checker. If the internet is not reachable it silently errors out.
+
 ### 2023-02-07: Version 23.02.07
 
 * Added script update checker - shows if an update is available in the log and console.

@@ -1,6 +1,6 @@
 ﻿<#PSScriptInfo
 
-.VERSION 23.02.07
+.VERSION 23.04.28
 
 .GUID 72cb5483-744e-4a7d-bcad-e04462ea2c2e
 
@@ -83,7 +83,7 @@ If ($NoBanner -eq $False)
          /\ /\| |_(_) (_) |_ _   _             Mike Galvin              
         / / \ \ __| | | | __| | | |          https://gal.vin            
         \ \_/ / |_| | | | |_| |_| |                                     
-         \___/ \__|_|_|_|\__|\__, |         Version 23.02.07            
+         \___/ \__|_|_|_|\__|\__, |         Version 23.04.28            
                              |___/         See -help for usage          
                                                                         
                   Donate: https://www.paypal.me/digressive              
@@ -197,15 +197,23 @@ else {
         }
     }
 
+    ## Function for Update Check
     Function UpdateCheck()
     {
-        $ScriptVersion = "23.02.07"
+        $ScriptVersion = "23.04.28"
         $RawSource = "https://raw.githubusercontent.com/Digressive/Office-Update/master/Office-Update.ps1"
-        $SourceCheck = Invoke-RestMethod -uri "$RawSource"
-        $VerCheck = Select-String -Pattern ".VERSION $ScriptVersion" -InputObject $SourceCheck
-        If ($null -eq $VerCheck)
-        {
-            Write-Log -Type Conf -Evt "*** There is an update available. ***"
+
+        try {
+            $SourceCheck = Invoke-RestMethod -uri "$RawSource"
+            $VerCheck = $SourceCheck -split '\n' | Select-String -Pattern ".VERSION $ScriptVersion" -SimpleMatch -CaseSensitive -Quiet
+
+            If ($VerCheck -ne $True)
+            {
+                Write-Log -Type Conf -Evt "*** There is an update available. ***"
+            }
+        }
+
+        catch {
         }
     }
 
@@ -233,7 +241,7 @@ else {
     ## Display the current config and log if configured.
     ##
     Write-Log -Type Conf -Evt "--- Running with the following config ---"
-    Write-Log -Type Conf -Evt "Utility Version: 23.02.07"
+    Write-Log -Type Conf -Evt "Utility Version: 23.04.28"
     UpdateCheck ## Run Update checker function
     Write-Log -Type Conf -Evt "Hostname: $Env:ComputerName."
     Write-Log -Type Conf -Evt "Windows Version: $OSV."
