@@ -12,7 +12,7 @@
 
 .TAGS Office 2022 2019 365 Click-to-run C2R updates
 
-.LICENSEURI
+.LICENSEURI https://github.com/Digressive/Office-Update?tab=MIT-1-ov-file
 
 .PROJECTURI https://gal.vin/utils/office-update-utility/
 
